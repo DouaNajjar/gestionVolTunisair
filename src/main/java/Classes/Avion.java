@@ -6,6 +6,7 @@ public class Avion {
     private String marque;
     private String modele;
     private int capacite;
+    private boolean disponible;
 
     public boolean isDisponible() {
         return disponible;
@@ -78,5 +79,5 @@ public class Avion {
         this.id_avion = id_avion;
     }
 
-    private boolean disponible;
+
 }

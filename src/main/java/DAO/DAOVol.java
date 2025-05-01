@@ -33,13 +33,13 @@ public class DAOVol {
         }
         return false;
     }
-    public static boolean supprimer(String matricule) {
+    public static boolean supprimer(String numero_vol) {
         Connection cn = Connexion.seConnecter();
-        String requete = "DELETE FROM vol WHERE matricule = ?";
+        String requete = "DELETE FROM vol WHERE numero_vol = ?";
 
         try {
             PreparedStatement pst = cn.prepareStatement(requete);
-            pst.setString(1, matricule);
+            pst.setString(1, numero_vol);
 
             int result = pst.executeUpdate();
             if (result > 0) {

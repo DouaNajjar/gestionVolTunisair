@@ -8,12 +8,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Test extends Application {
+public class Test2 extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("gestion-avions.fxml"));
-        primaryStage.setTitle("gestion des avions Tunisair");
+
+        Parent root = FXMLLoader.load(getClass().getResource("gestion-equipages.fxml"));
+        primaryStage.setTitle("gestion des equipages Tunisair");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

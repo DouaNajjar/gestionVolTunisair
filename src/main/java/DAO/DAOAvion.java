@@ -2,7 +2,6 @@ package DAO;
 
 import Classes.Avion;
 
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -37,8 +36,11 @@ public class DAOAvion {
         }
         return listeAvions;
     }
+
+    private static Connection cn = Connexion.seConnecter();
+
     public static boolean ajouter(Avion a) {
-        Connection cn = Connexion.seConnecter();
+
         String requete = "insert into avion values(null,?,?,?,?,?)";
 
         try {
@@ -46,8 +48,8 @@ public class DAOAvion {
             pst.setString(1, a.getMatricule());
             pst.setString(2, a.getMarque());
             pst.setString(3, a.getModele());
-            pst.setInt(4,a.getCapacite());
-            pst.setBoolean(5,a.isDisponible());
+            pst.setInt(4, a.getCapacite());
+            pst.setBoolean(5, a.isDisponible());
 
             int n = pst.executeUpdate();
             if (n >= 1) {
@@ -59,27 +61,29 @@ public class DAOAvion {
         }
         return false;
     }
-        public static boolean supprimer(Avion a) {
-            Connection cn = Connexion.seConnecter();
-            String requete = "delete from avion where matricule = ?";
 
-            try {
-                PreparedStatement pst = cn.prepareStatement(requete);
-                pst.setString(1, a.getMatricule());
+    public static boolean supprimer(Avion a) {
 
-                int n = pst.executeUpdate();
-                if (n >= 1) {
-                    System.out.println("Suppression réussie d'avion");
-                    return true;
-                }
-            } catch (SQLException ex) {
-                System.out.println("Problème de requête de suppression : " + ex.getMessage());
+        String requete = "delete from avion where matricule = ?";
+
+        try {
+            PreparedStatement pst = cn.prepareStatement(requete);
+            pst.setString(1, a.getMatricule());
+
+            int n = pst.executeUpdate();
+            if (n >= 1) {
+                System.out.println("Suppression réussie d'avion");
+                return true;
             }
-            return false;
+        } catch (SQLException ex) {
+            System.out.println("Problème de requête de suppression : " + ex.getMessage());
         }
+        return false;
+    }
+
     public static ArrayList<Avion> chercherAvion(String recherche) {
         ArrayList<Avion> listeAvions = new ArrayList<>();
-        Connection cn = Connexion.seConnecter();
+
         String requete = "SELECT * FROM avion WHERE "
                 + "matricule LIKE '%" + recherche + "%' OR "
                 + "marque LIKE '%" + recherche + "%' OR "
@@ -107,13 +111,14 @@ public class DAOAvion {
 
         return listeAvions;
     }
+
     public static boolean modifier(Avion avion) {
         // Implémentez la logique de mise à jour dans la base de données
         // Exemple avec JDBC:
         String sql = "UPDATE avion SET marque=?, modele=?, capacite=?, disponible=? WHERE matricule=?";
 
-        try (Connection conn = Connexion.seConnecter();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try {
+            PreparedStatement pstmt = cn.prepareStatement(sql);
 
             pstmt.setString(1, avion.getMarque());
             pstmt.setString(2, avion.getModele());
@@ -127,11 +132,12 @@ public class DAOAvion {
             return false;
         }
     }
+
     public static boolean existeMatricule(String matricule) {
         String requete = "SELECT COUNT(*) FROM avion WHERE matricule = ?";
 
-        try (Connection cn = Connexion.seConnecter();
-             PreparedStatement pst = cn.prepareStatement(requete)) {
+        try {
+            PreparedStatement pst = cn.prepareStatement(requete);
 
             pst.setString(1, matricule);
             ResultSet rs = pst.executeQuery();

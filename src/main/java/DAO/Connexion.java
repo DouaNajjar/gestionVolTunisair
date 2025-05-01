@@ -9,8 +9,8 @@ import java.sql.SQLException;
 
 public class Connexion {
     private static Connection con;
-    private static String user;
-    private static String passWord;
+    private static String user="root";
+    private static String passWord="";
 
     public static Connection seConnecter() {
         if (con == null) {

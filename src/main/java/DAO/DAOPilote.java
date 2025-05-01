@@ -1,58 +1,62 @@
 package DAO;
 
+import Classes.Employe;
 import Classes.Pilote;
-
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class DAOPilote {
-    public static ArrayList<Pilote>lister(){
-        ArrayList<Pilote> listePilote=new ArrayList<>();
-        Connection cn=Connexion.seConnecter();
-        String requete="select * from pilote;";
-        int  id_pilote;
-        String nom,prenom,email,cin;
+    private static Connection cn = Connexion.seConnecter();
+
+    public static ArrayList<Employe> lister() {
+        ArrayList<Employe> listePilotes = new ArrayList<>();
+
+        String requete = "select * from pilote;";
+        int id_pilote;
+        String nom, prenom, email, cin, tel;
         Date date_embauche;
         boolean disponibilite;
 
-        Pilote p;
-        try{
-            Statement st=cn.createStatement();
-            ResultSet rs=st.executeQuery(requete);
-            while(rs.next()){
-                id_pilote=rs.getInt(1);
-                nom=rs.getString(2);
-                prenom=rs.getString(3);
-                email=rs.getString(4);
-                date_embauche=rs.getDate(5);
-                disponibilite=rs.getBoolean(6);
-                cin=rs.getString(7);
-                p=new Pilote(cin,nom,prenom,email,date_embauche,disponibilite);
-                p.setIdPilote(id_pilote);
-                listePilote.add(p);
+        Employe p;
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+            while (rs.next()) {
+                id_pilote = rs.getInt(1);
+                nom = rs.getString(2);
+                prenom = rs.getString(3);
+                tel = rs.getString(4);
+                email = rs.getString(5);
+                date_embauche = rs.getDate(6);
+                disponibilite = rs.getBoolean(7);
+                cin = rs.getString(8);
+                p = new Pilote(cin, nom, prenom, email, date_embauche, disponibilite, tel);
+                p.setId(id_pilote);
+                listePilotes.add(p);
 
 
             }
-            System.out.println("consultation pilote ok");
-        }catch(SQLException e){
-            System.out.println("probleme de consultation pilote");
+            System.out.println("consultation ok pilote");
+        } catch (SQLException e) {
+            System.out.println("probleme de consultation de pilote");
         }
-        return listePilote;
+        return listePilotes;
     }
+
     public static boolean ajouter(Pilote p) {
-        Connection cn = Connexion.seConnecter();
-        String requete = "insert into pilote values(null,?,?,?,?,?,?)";
+
+        String requete = "insert into pilote values(null,?,?,?,?,?,?,?)";
 
         try {
             PreparedStatement pst = cn.prepareStatement(requete);
             pst.setString(1, p.getNom());
             pst.setString(2, p.getPrenom());
-            pst.setString(3, p.getEmail());
-            pst.setDate(4,p.getDateEmbauche());
-            pst.setBoolean(5,p.getDisponibilite());
-            pst.setString(6, p.getCin());
-
+            pst.setString(3, p.getNum_tel());
+            pst.setString(4, p.getEmail());
+            pst.setDate(5, p.getDateEmbauche());
+            pst.setBoolean(6, p.getDisponibilite());
+            pst.setString(7, p.getCin());
 
 
             int n = pst.executeUpdate();
@@ -65,13 +69,45 @@ public class DAOPilote {
         }
         return false;
     }
+
+    public static ArrayList<Employe> chercherPilotes(String recherche) {
+        ArrayList<Employe> listePilotes = new ArrayList<>();
+
+        String requete = "SELECT * FROM pilote WHERE " + "nom LIKE '%" + recherche + "%' OR " + "prenom LIKE '%" + recherche + "%' OR " + "num_tel LIKE '%" + recherche + "%' OR " + "email LIKE '%" + recherche + "%' OR " + "cin LIKE '%" + recherche + "%'";
+
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(requete);
+
+            while (rs.next()) {
+                Employe p = new Pilote();
+                p.setId(rs.getInt("id_pilote"));
+                p.setNom(rs.getString("nom"));
+                p.setPrenom(rs.getString("prenom"));
+                p.setNum_tel(rs.getString("num_tel"));
+                p.setEmail(rs.getString("email"));
+                p.setDateEmbauche(rs.getDate("date_embauche"));
+                p.setDisponibilite(rs.getBoolean("disponibilite"));
+                p.setCin(rs.getString("cin"));
+
+
+                listePilotes.add(p);
+            }
+            System.out.println("Recherche pilote réussie");
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la recherche pilote");
+        }
+
+        return listePilotes;
+    }
+
     public static boolean supprimer(Pilote p) {
-        Connection cn = Connexion.seConnecter();
-        String requete = "delete from pilote where cin = ?";
+
+        String requete = "delete from pilote where id_pilote = ?";
 
         try {
             PreparedStatement pst = cn.prepareStatement(requete);
-            pst.setString(1, p.getCin());
+            pst.setInt(1, p.getId());
 
             int n = pst.executeUpdate();
             if (n >= 1) {
@@ -83,49 +119,28 @@ public class DAOPilote {
         }
         return false;
     }
-    public static Pilote chercherParCIN(String cin){
-        Connection cn=Connexion.seConnecter();
-        String requete="select * from pilote where cin='"+cin+"'";
-        String nom,prenom,email;
-        Date date_embauche;
-        boolean disponibilite;
-        try{
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(requete);
-            while(rs.next()){
-                cin = rs.getString("cin");
-                nom = rs.getString("nom");
-                prenom = rs.getString("prenom");
-                email = rs.getString("email");
-                date_embauche=rs.getDate("date_embauche");
-                disponibilite=rs.getBoolean("disponibilite");
-                Pilote pilote = new Pilote(cin, nom, prenom, email, date_embauche, disponibilite);
-                return pilote;
-            }}catch(SQLException e){
-            System.out.println("erreur"+e.getMessage());
-        }
-        return null;
-    }
-    public static Pilote chercherParNomOuPrenom(String nomRecherche, String prenomRecherche) {
-        Connection cn = Connexion.seConnecter();
-        String requete = "SELECT * FROM pilote WHERE nom = '" + nomRecherche + "' OR prenom = '" + prenomRecherche + "'";
 
+    public static boolean modifier(Pilote p) {
         try {
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(requete);
-            if (rs.next()) {
-                String cin = rs.getString("cin");
-                String nom = rs.getString("nom");
-                String prenom = rs.getString("prenom");
-                String email = rs.getString("email");
-                Date date_embauche = rs.getDate("date_embauche");
-                boolean disponibilite = rs.getBoolean("disponibilite");
-                return new Pilote(cin, nom, prenom, email, date_embauche, disponibilite);
-            }
+            String sql = "UPDATE pilote SET nom = ?, prenom = ?, email = ?, date_embauche = ?, disponibilite = ?, num_tel = ?,cin=? WHERE id_pilote = ?";
+
+            PreparedStatement pstmt = cn.prepareStatement(sql);
+            pstmt.setString(1, p.getNom());
+            pstmt.setString(2, p.getPrenom());
+            pstmt.setString(3, p.getEmail());
+            pstmt.setDate(4, p.getDateEmbauche());
+            pstmt.setBoolean(5, p.getDisponibilite());
+            pstmt.setString(6, p.getNum_tel());
+            pstmt.setString(7, p.getCin());
+            pstmt.setInt(8,p.getId());
+
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+
         } catch (SQLException e) {
-            System.out.println("Erreur : " + e.getMessage());
+            e.printStackTrace();
+            return false;
         }
-        return null;
     }
 
 }
