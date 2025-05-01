@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="">
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="60.0" style="-fx-background-color: #005a9c;" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Tunisair" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </HBox.margin>
+            </Label>
+            <Separator orientation="VERTICAL" prefHeight="40.0">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Separator>
+            <Label text="Programmation des Vols" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="userNameLabel" text="Nom Utilisateur" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 3;" text="Déconnexion" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </top>
+   <left>
+      <VBox prefHeight="640.0" prefWidth="200.0" style="-fx-background-color: #f0f0f0;" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="dashboardButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleDashboard" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Tableau de Bord">
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </Button>
+            <Button fx:id="flightsButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleFlights" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Gestion des Vols">
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </Button>
+            <Button fx:id="aircraftButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleAircraft" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Gestion des Avions">
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </Button>
+            <Button fx:id="crewButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleCrew" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Gestion des Équipages">
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </Button>
+            <Button fx:id="schedulingButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleScheduling" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #e0e0e0;" text="Programmation des Vols">
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <VBox spacing="20.0" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <children>
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <Label text="Programmation des Vols">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <GridPane hgap="10.0" vgap="10.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Sélectionner un Vol:" />
+                  <ComboBox fx:id="flightComboBox" prefWidth="150.0" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+            <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Avions Disponibles">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TableView fx:id="availableAircraftTable" prefHeight="148.0" prefWidth="206.0" VBox.vgrow="ALWAYS">
+                          <columns>
+                            <TableColumn fx:id="aircraftRegColumn" prefWidth="122.39996337890625" text="Matricule" />
+                            <TableColumn fx:id="aircraftModelColumn" prefWidth="109.60003662109375" text="Modèle" />
+                            <TableColumn fx:id="aircraftCapacityColumn" prefWidth="111.9999938964844" text="Capacité" />
+                          </columns>
+                        </TableView>
+                        <HBox alignment="CENTER">
+                           <children>
+                              <Button fx:id="selectAircraftButton" mnemonicParsing="false" onAction="#handleSelectAircraft" style="-fx-background-color: #005a9c;" text="Sélectionner Avion" textFill="WHITE" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Pilotes Disponibles">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TableView fx:id="availablePilotsTable" prefHeight="123.0" prefWidth="256.0" VBox.vgrow="ALWAYS">
+                          <columns>
+                            <TableColumn fx:id="pilotIdColumn" prefWidth="147.20000612735748" text="CIN" />
+                            <TableColumn fx:id="pilotNameColumn" minWidth="4.0" prefWidth="132.0" text="Nom" />
+                            <TableColumn fx:id="pilotQualificationColumn" minWidth="0.0" prefWidth="115.2000732421875" text="Prénom" />
+                          </columns>
+                        </TableView>
+                        <HBox alignment="CENTER">
+                           <children>
+                              <Button fx:id="selectPilotButton" mnemonicParsing="false" onAction="#handleSelectPilot" style="-fx-background-color: #005a9c;" text="Sélectionner Pilote" textFill="WHITE" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Équipage Disponible">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TableView fx:id="availableCrewTable" prefHeight="206.0" prefWidth="220.0" VBox.vgrow="ALWAYS">
+                          <columns>
+                            <TableColumn fx:id="crewIdColumn" prefWidth="102.39999389648438" text="CIN" />
+                            <TableColumn fx:id="crewNameColumn" prefWidth="113.60003662109375" text="Nom" />
+                            <TableColumn fx:id="crewFunctionColumn" prefWidth="123.19998168945312" text="Prénom" />
+                          </columns>
+                        </TableView>
+                        <HBox alignment="CENTER">
+                           <children>
+                              <Button fx:id="selectCrewButton" mnemonicParsing="false" onAction="#handleSelectCrew" style="-fx-background-color: #005a9c;" text="Sélectionner Membre d'Équipage" textFill="WHITE" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Résumé de l'Affectation">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <GridPane hgap="10.0" vgap="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Vol:" />
+                              <Label fx:id="selectedFlightLabel" text="Non sélectionné" GridPane.columnIndex="1" />
+                              <Label text="Avion:" GridPane.rowIndex="1" />
+                              <Label fx:id="selectedAircraftLabel" text="Non sélectionné" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label text="Pilote:" GridPane.rowIndex="2" />
+                              <Label fx:id="selectedCrewCountLabel" text="Non sélectionné" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="Équipage:" GridPane.rowIndex="3" />
+                              <Label text="0 sélectionné(s)" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                           </children>
+                        </GridPane>
+                        <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                           <children>
+                              <Button fx:id="clearSelectionButton" mnemonicParsing="false" onAction="#handleClearSelection" style="-fx-background-color: #e0e0e0;" text="Effacer la Sélection" />
+                              <Button fx:id="confirmAssignmentButton" mnemonicParsing="false" onAction="#handleConfirmAssignment" style="-fx-background-color: #4caf50;" text="Confirmer l'Affectation" textFill="WHITE" />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
