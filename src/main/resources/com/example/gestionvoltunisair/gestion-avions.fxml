@@ -120,15 +120,17 @@
                <children>
                   <Label text="Matricule:" />
                   <TextField fx:id="registrationField" GridPane.columnIndex="1" />
-                  <Label text="Modèle:" GridPane.columnIndex="2" />
-                  <TextField fx:id="modelField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Marque:" GridPane.rowIndex="1" />
+                  <TextField fx:id="marqueField" GridPane.columnIndex="3" />
                   <Label text="Capacité:" GridPane.rowIndex="2" />
                   <TextField fx:id="capacityField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label text="Disponible" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label text="Modele:" GridPane.columnIndex="2" />
+                  <TextField fx:id="modelField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <CheckBox fx:id="disponibleCheckBox" mnemonicParsing="false"
                             GridPane.rowIndex="1" GridPane.columnIndex="3"/>
-                  <Label text="Marque:" GridPane.rowIndex="1" />
-                  <TextField fx:id="marqueField" GridPane.columnIndex="3" />
+
+
                </children>
             </GridPane>
             <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="383.0" spacing="10.0">
@@ -158,8 +160,9 @@
               <columns>
                 <TableColumn fx:id="registrationColumn" prefWidth="127.20001220703125" text="Matricule" />
                   <TableColumn fx:id="marqueColumn" prefWidth="163.199951171875" text="Marque" />
-                <TableColumn fx:id="modelColumn" prefWidth="146.39999389648438" text="Modèle" />
+
                 <TableColumn fx:id="capacityColumn" minWidth="0.0" prefWidth="129.5999755859375" text="Capacité" />
+                 <TableColumn fx:id="modelColumn" prefWidth="146.39999389648438" text="Modele" />
                 <TableColumn fx:id="typeColumn" prefWidth="275.2000732421875" text="Disponibilité" />
               </columns>
             </TableView>

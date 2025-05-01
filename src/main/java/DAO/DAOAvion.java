@@ -37,28 +37,28 @@ public class DAOAvion {
         }
         return listeAvions;
     }
-        public static boolean ajouter(Avion a) {
-            Connection cn = Connexion.seConnecter();
-            String requete = "insert into avion values(null,?,?,?,?,?)";
+    public static boolean ajouter(Avion a) {
+        Connection cn = Connexion.seConnecter();
+        String requete = "insert into avion values(null,?,?,?,?,?)";
 
-            try {
-                PreparedStatement pst = cn.prepareStatement(requete);
-                pst.setString(1, a.getMatricule());
-                pst.setString(2, a.getMarque());
-                pst.setString(3, a.getModele());
-                pst.setInt(4,a.getCapacite());
-                pst.setBoolean(5,a.isDisponible());
+        try {
+            PreparedStatement pst = cn.prepareStatement(requete);
+            pst.setString(1, a.getMatricule());
+            pst.setString(2, a.getMarque());
+            pst.setString(3, a.getModele());
+            pst.setInt(4,a.getCapacite());
+            pst.setBoolean(5,a.isDisponible());
 
-                int n = pst.executeUpdate();
-                if (n >= 1) {
-                    System.out.println("ajout réussi d'avion");
-                    return true;
-                }
-            } catch (SQLException ex) {
-                System.out.println("problème de requête : " + ex.getMessage());
+            int n = pst.executeUpdate();
+            if (n >= 1) {
+                System.out.println("ajout réussi d'avion");
+                return true;
             }
-            return false;
+        } catch (SQLException ex) {
+            System.out.println("problème de requête : " + ex.getMessage());
         }
+        return false;
+    }
         public static boolean supprimer(Avion a) {
             Connection cn = Connexion.seConnecter();
             String requete = "delete from avion where matricule = ?";
@@ -107,27 +107,42 @@ public class DAOAvion {
 
         return listeAvions;
     }
-    public static boolean modifier(Avion a) {
-        Connection cn = Connexion.seConnecter();
-        String requete = "UPDATE avion SET matricule = ?, marque = ?, modele = ?, capacite = ?, disponible = ? WHERE id_avion = ?";
+    public static boolean modifier(Avion avion) {
+        // Implémentez la logique de mise à jour dans la base de données
+        // Exemple avec JDBC:
+        String sql = "UPDATE avion SET marque=?, modele=?, capacite=?, disponible=? WHERE matricule=?";
 
-        try {
-            PreparedStatement pst = cn.prepareStatement(requete);
-            pst.setString(1, a.getMatricule());
-            pst.setString(2, a.getMarque());
-            pst.setString(3, a.getModele());
-            pst.setInt(4, a.getCapacite());
-            pst.setBoolean(5, a.isDisponible());
-            pst.setInt(6, a.getId_avion());
+        try (Connection conn = Connexion.seConnecter();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            int n = pst.executeUpdate();
-            if (n >= 1) {
-                System.out.println("Modification réussie d'avion");
-                return true;
+            pstmt.setString(1, avion.getMarque());
+            pstmt.setString(2, avion.getModele());
+            pstmt.setInt(3, avion.getCapacite());
+            pstmt.setBoolean(4, avion.isDisponible());
+            pstmt.setString(5, avion.getMatricule());
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static boolean existeMatricule(String matricule) {
+        String requete = "SELECT COUNT(*) FROM avion WHERE matricule = ?";
+
+        try (Connection cn = Connexion.seConnecter();
+             PreparedStatement pst = cn.prepareStatement(requete)) {
+
+            pst.setString(1, matricule);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
             }
         } catch (SQLException ex) {
-            System.out.println("Problème de requête de modification : " + ex.getMessage());
+            System.out.println("Erreur vérification matricule: " + ex.getMessage());
         }
         return false;
     }
-    }
+
+}

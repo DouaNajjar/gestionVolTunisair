@@ -35,7 +35,8 @@ public class TestDAO {
         //System.out.println(DAOAvion.lister());
         Avion a1=new Avion("m741852","Airbus","modele1",250,Boolean.TRUE);
         Avion a2=new Avion("m852147","Comac ","modele2",500,Boolean.TRUE);
-        //DAOAvion.ajouter(a1);
+        Avion a3=new Avion("j852","airfrance ","modele3",500,Boolean.TRUE);
+        DAOAvion.ajouter(a3);
         //DAOAvion.ajouter(a2);
         //DAOAvion.supprimer(a1);
         //System.out.println(DAOAvion.chercherAvion("m852147"));
